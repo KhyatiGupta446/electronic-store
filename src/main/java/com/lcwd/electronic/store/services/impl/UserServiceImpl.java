@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
     @Value("${user.profile.image.path}")
     private String imagePath;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -47,6 +51,8 @@ public class UserServiceImpl implements UserService {
         //generate uniqueId in String format
         String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
+        //encode password
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         //dto -> entity
         User user = dtoToEntity(userDto);
         User savedUser = userRepository.save(user);

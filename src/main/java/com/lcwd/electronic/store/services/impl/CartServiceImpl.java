@@ -69,7 +69,7 @@ public class CartServiceImpl implements CartService {
         //if cart items already present, then update
         AtomicBoolean updated = new AtomicBoolean(false);
          List<CartItem> items = cart.getItems();
-        List<CartItem> updatedItems = items.stream().map(item -> {
+        items= items.stream().map(item -> {
             if (item.getProduct().getProductId().equals(productId)) {
                 //item already present in the cart
                 item.setQuantity(quantity);
